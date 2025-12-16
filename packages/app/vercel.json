@@ -2,11 +2,5 @@
   "version": 2,
   "framework": "nextjs",
   "buildCommand": "bun run build",
-  "installCommand": "bun install --include=optional",
-  "functions": {
-    "api/**/*.{js,ts}": {
-      "memory": 2048,
-      "maxDuration": 10
-    }
-  }
+  "installCommand": "bun install --include=optional"
 }
