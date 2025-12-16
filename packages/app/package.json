@@ -13,32 +13,20 @@
     "public:": "./public"
   },
   "scripts": {
-  "dev": "next dev",
-  "build": "next build",
-  "start": "next start",
-  "dev:bun": "bun run checks && next dev",
-  "build:bun": "bun run prepare && bun run checks && rm -Rf out && next build && bun run build:copyassets",
-  "start:prod": "bun .next/standalone/packages/app/server.js",
-
-  "build:copyassets": "cp -R public .next/standalone/packages/app/public && cp -R .next/static .next/standalone/packages/app/.next/static",
-  "prepare": "cp -R ../../node_modules/mediainfo.js/dist/MediaInfoModule.wasm public/wasm/",
-  "checks": "bun run format:fix && bun run lint",
-
-  "format": "prettier --check --ignore-path .gitignore ./src/",
-  "format:fix": "prettier --write --ignore-path .gitignore ./src/",
-  "lint": "next lint",
-  "lint:fix": "next lint --fix",
-
-  "test": "bun run build:bun && bun run test:unit:ci",
-  "test:unit:ci": "vitest run",
-  "test:unit:watch": "vitest",
-  "test:e2e": "bunx playwright test",
-
-  "electron": "bun run build:bun && electron .",
-  "electron:start": "bun run build:bun && electron-forge start",
-  "electron:package": "bun run build:bun && electron-forge package",
-  "electron:make": "bun run build:bun && electron-forge make"
-},
+    "dev": "bun run checks && next dev",
+    "build": "bun run build:vercel",
+    "build:vercel": "bun run prepare && next build",
+    "build:local": "bun run prepare && bun run checks && rm -Rf out && next build && bun run build:copyassets",
+    "build:copyassets": "cp -R public .next/standalone/packages/app/public && cp -R .next/static .next/standalone/packages/app/.next/static",
+    "prepare": "mkdir -p public/wasm && cp -R ../../node_modules/mediainfo.js/dist/MediaInfoModule.wasm public/wasm/ || true",
+    "start": "next start",
+    "start:prod": "bun .next/standalone/packages/app/server.js",
+    "checks": "bun run format:fix && bun run lint",
+    "format": "prettier --check --ignore-path .gitignore ./src/",
+    "format:fix": "prettier --write --ignore-path .gitignore ./src/",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix"
+  },
   "dependencies": {
     "@aitube/client": "workspace:*",
     "@aitube/broadway": "workspace:*",

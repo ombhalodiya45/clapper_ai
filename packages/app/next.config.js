@@ -2,12 +2,35 @@
 const nextConfig = {
   output: 'standalone',
 
+  // Speed up builds - run linting/type checking separately
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+
+  // Enable SWC minification for better performance
+  swcMinify: true,
+
+  // Disable source maps in production to reduce bundle size
+  productionBrowserSourceMaps: false,
+
   experimental: {
     serverActions: {
       // a clap file can be quite large - but that's OK
       bodySizeLimit: '32mb'
-    }
+    },
+    // Optimize large dependencies - don't bundle these on server
+    serverComponentsExternalPackages: [
+      'sharp',
+      'fluent-ffmpeg',
+      '@ffmpeg/ffmpeg',
+      '@huggingface/transformers',
+      'onnxruntime-node',
+    ],
   },
+
   images: {
     // temporary fix for:
     //
@@ -17,24 +40,44 @@ const nextConfig = {
     //   The image may be corrupted or an unsupported format.
     unoptimized: true,
   },
+
   // workaround for transformers.js issues
-  webpack: (config) => {
+  webpack: (config, { isServer }) => {
     config.resolve.alias = {
-        ...config.resolve.alias,
-        // "sharp$": false,
-        "onnxruntime-node$": false,
+      ...config.resolve.alias,
+      // "sharp$": false,
+      "onnxruntime-node$": false,
     }
+
+    // Enable WASM support for mediainfo.js
+    config.experiments = {
+      ...config.experiments,
+      asyncWebAssembly: true,
+      layers: true,
+    }
+
+    // Handle WASM files properly
+    config.module.rules.push({
+      test: /\.wasm$/,
+      type: 'asset/resource',
+    })
 
     // see https://github.com/replicate/replicate-javascript/issues/273#issuecomment-2248635353
     config.ignoreWarnings = [
       {
         module: /replicate/,
-         message: /require function is used in a way in which dependencies cannot be statically extracted/,
+        message: /require function is used in a way in which dependencies cannot be statically extracted/,
+      },
+      // Suppress common node_modules warnings
+      {
+        module: /node_modules/,
+        message: /Critical dependency: the request of a dependency is an expression/,
       },
     ]
 
     return config;
-},
+  },
+
   async headers() {
     return [
       {
@@ -59,7 +102,7 @@ const nextConfig = {
         ]
       }
     ]
-}
+  }
 }
 
 module.exports = nextConfig

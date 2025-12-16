@@ -1,12 +1,14 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "packages/app/package.json",
-      "use": "@vercel/next"
+  "bunVersion": "1.x",
+  "buildCommand": "cd packages/app && bun run build:vercel",
+  "installCommand": "bun install",
+  "outputDirectory": "packages/app/.next",
+  "framework": "nextjs",
+  "functions": {
+    "packages/app/api/**/*.{js,ts}": {
+      "memory": 3008,
+      "maxDuration": 60
     }
-  ],
-  "routes": [
-    { "src": "/(.*)", "dest": "packages/app/$1" }
-  ]
+  }
 }
