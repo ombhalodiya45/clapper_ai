@@ -13,12 +13,13 @@
     "public:": "./public"
   },
   "scripts": {
-    "dev": "bun run checks && next dev",
+    "dev": "next dev",
+    "dev:check": "bun run checks && next dev",
     "build": "bun run build:vercel",
     "build:vercel": "bun run prepare && next build",
     "build:local": "bun run prepare && bun run checks && rm -Rf out && next build && bun run build:copyassets",
     "build:copyassets": "cp -R public .next/standalone/packages/app/public && cp -R .next/static .next/standalone/packages/app/.next/static",
-    "prepare": "mkdir -p public/wasm && cp -R ../../node_modules/mediainfo.js/dist/MediaInfoModule.wasm public/wasm/ || true",
+    "prepare": "mkdir -p public/wasm && (cp -R ../../node_modules/mediainfo.js/dist/MediaInfoModule.wasm public/wasm/ 2>/dev/null || echo 'WASM copy skipped')",
     "start": "next start",
     "start:prod": "bun .next/standalone/packages/app/server.js",
     "checks": "bun run format:fix && bun run lint",
