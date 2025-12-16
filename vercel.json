@@ -7,7 +7,7 @@
   "framework": "nextjs",
   "functions": {
     "packages/app/api/**/*.{js,ts}": {
-      "memory": 3008,
+      "memory": 2048,
       "maxDuration": 60
     }
   }
