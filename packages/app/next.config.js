@@ -28,6 +28,7 @@ const nextConfig = {
       '@ffmpeg/ffmpeg',
       '@huggingface/transformers',
       'onnxruntime-node',
+      'lodash',
     ],
   },
 
@@ -62,6 +63,14 @@ const nextConfig = {
       type: 'asset/resource',
     })
 
+    // Add fallbacks for Node.js modules
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      fs: false,
+      net: false,
+      tls: false,
+    }
+
     // see https://github.com/replicate/replicate-javascript/issues/273#issuecomment-2248635353
     config.ignoreWarnings = [
       {
@@ -72,6 +81,10 @@ const nextConfig = {
       {
         module: /node_modules/,
         message: /Critical dependency: the request of a dependency is an expression/,
+      },
+      // Ignore lodash warnings
+      {
+        module: /lodash/,
       },
     ]
 
