@@ -382,7 +382,9 @@ export function Main(
     <TooltipProvider>
       <DndProvider backend={HTML5Backend}>
         <ErrorBoundary fallbackRender={fallbackRender}>
-          <MainContent mode={mode} />
+          <React.Suspense fallback={<div className="fixed inset-0 bg-black" />}>
+            <MainContent mode={mode} />
+          </React.Suspense>
         </ErrorBoundary>
       </DndProvider>
     </TooltipProvider>
