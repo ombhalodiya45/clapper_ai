@@ -27,7 +27,7 @@ import { EntityEditor } from '@/components/editors/EntityEditor'
 import { WorkflowEditor } from '@/components/editors/WorkflowEditor'
 import { FilterEditor } from '@/components/editors/FilterEditor'
 
-import { useUI, useIO, useTheme, useMonitor } from '@/services'
+import { useUI, useIO, useTheme } from '@/services'
 import { useRenderLoop } from '@/services/renderer'
 import { useDynamicWorkflows } from '@/services/editors/workflow-editor/useDynamicWorkflows'
 
@@ -70,7 +70,7 @@ function MainContent({ mode }: { mode: ClapperIntegrationMode }) {
   // also has to be done here
   useSetupIframeOnce(isIframe)
 
-  const [{ isOver, canDrop }, connectFileDrop] = useDrop({
+  const [{}, connectFileDrop] = useDrop({
     accept: [NativeTypes.FILE],
     drop: (item: DroppableThing): void => {
       // console.log("DROP", item)
@@ -358,7 +358,7 @@ function MainContent({ mode }: { mode: ClapperIntegrationMode }) {
   )
 }
 
-function fallbackRender({ error, resetErrorBoundary }: FallbackProps) {
+function fallbackRender({ error }: FallbackProps) {
   // Call resetErrorBoundary() to reset the error boundary and retry the render.
 
   return (
