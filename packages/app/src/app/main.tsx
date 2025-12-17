@@ -7,7 +7,6 @@ import { DndProvider, useDrop } from 'react-dnd'
 import { HTML5Backend, NativeTypes } from 'react-dnd-html5-backend'
 import { UIWindowLayout } from '@aitube/clapper-services'
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary'
-import { Bellhop } from 'bellhop-iframe'
 
 import { Toaster } from '@/components/ui/sonner'
 import { cn } from '@/lib/utils'
